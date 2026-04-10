@@ -11,29 +11,31 @@ source:
 
 build:
   number: 0
-  script: {{ PYTHON }} -m pip install . -vv
-  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - cull_idle_servers.py = jupyterhub_idle_culler:main
     - jupyterhub-idle-culler = jupyterhub_idle_culler:main
 
 requirements:
   host:
-    - python >=3.7
+    - python
     - pip
     - hatchling
   run:
-    - python >=3.7
+    - python
     - packaging
     - tornado
     - python-dateutil
 
 test:
+  requires:
+    - pip
   imports:
     - jupyterhub_idle_culler
   commands:
     - cull_idle_servers.py --help
     - jupyterhub-idle-culler --help
+    - pip check
 
 about:
   home: https://github.com/jupyterhub/jupyterhub-idle-culler
